@@ -1,22 +1,22 @@
-import { Hero } from '../Model/hero';
-import { Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
+import {Hero} from '../Model/hero';
+import {AuthenticationService} from '../services/authentication.service';
+import {ApiService} from './api.service';
+import {Injectable} from '@angular/core';
 
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class HeroService {
 
-  private heroesUrl = 'http://localhost:8080/heroes';  // URL to web api
-  private headers = new Headers({'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'});
+  private path = '/heroes';
 
-  constructor(private http: Http) { }
+  constructor(private authenticationService: AuthenticationService, private api: ApiService) {}
 
   getHeroes(): Promise<Hero[]> {
-    return this.http.get(this.heroesUrl, {headers: this.headers})
-             .toPromise()
-             .then(response => response.json() as Hero[])
-             .catch(this.handleError);
+    return this.api.get(this.path)
+      .toPromise()
+      .then(response => response.json() as Hero[])
+      .catch(this.handleError);
   }
 
   private handleError(error: any): Promise<any> {
@@ -25,35 +25,35 @@ export class HeroService {
   }
 
   getHero(id: number): Promise<Hero> {
-    const url = this.heroesUrl + '/' + id;
-    return this.http.get(url, {headers: this.headers})
+    const url = this.path + '/' + id;
+    return this.api.get(url)
       .toPromise()
       .then(response => response.json() as Hero)
       .catch(this.handleError);
   }
 
   update(hero: Hero): Promise<Hero> {
-    const url = this.heroesUrl + '/' + hero.id;
-    return this.http
-      .put(url, JSON.stringify(hero), {headers: this.headers})
+    const url = this.path + '/' + hero.id;
+    return this.api
+      .put(url, hero)
       .toPromise()
       .then(() => hero)
       .catch(this.handleError);
-   }
+  }
 
   create(name: string): Promise<Hero> {
     const hero = new Hero;
     hero.name = name;
-    return this.http
-      .post(this.heroesUrl, JSON.stringify(hero), {headers: this.headers})
+    return this.api
+      .post(this.path, hero)
       .toPromise()
       .then(res => res.json() as Hero)
       .catch(this.handleError);
   }
 
   delete(id: number): Promise<void> {
-    const url = this.heroesUrl + '/' + id;
-    return this.http.delete(url, {headers: this.headers})
+    const url = this.path + '/' + id;
+    return this.api.delete(url)
       .toPromise()
       .then(() => null)
       .catch(this.handleError);
