@@ -1,14 +1,13 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers, Response} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
-import {JwtHelper} from 'angular2-jwt';
 import 'rxjs/add/operator/map';
 
 @Injectable()
 export class AuthenticationService {
 
-  private jwtHelper: JwtHelper = new JwtHelper();
-  private authUrl: String = 'http://localhost:8080/login';
+  private authUrl = 'http://localhost:8080/login';
+  private token;
 
   constructor(private http: Http) {
     // set token if saved in local storage
@@ -19,14 +18,14 @@ export class AuthenticationService {
   login(username: string, password: string): Observable<boolean> {
     const headers = new Headers({
       'Access-Control-Allow-Origin': '*',
-      'Authorization': 'Basic ' + btoa(username + ":" + password)
+      'Authorization': 'Basic ' + btoa(username + ':' + password)
     });
-    return this.http.post(this.authUrl, null, headers)
+    return this.http.post(this.authUrl, {}, {headers: headers})
       .map((response: Response) => {
         // login successful if there's a jwt token in the response
-        const token = response.json() && response.json().token;
-        if (token) {
-
+        if (response.ok) {
+          console.log(response.headers.keys());
+          const token = response.headers.get('authorization').substr('Bearer'.length);
           // store username and jwt token in local storage to keep user logged in between page refreshes
           localStorage.setItem('currentUser', JSON.stringify({username: username, token: token}));
 
@@ -39,14 +38,15 @@ export class AuthenticationService {
       });
   }
 
-  getToken(): String {
-    var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    var token = currentUser && currentUser.token;
-    return token ? token : "";
+  getToken(): string {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    console.log(currentUser);
+    const token = currentUser && currentUser.token;
+    return token ? token : '';
   }
 
   isLoggedIn(): boolean {
-    var token: String = this.getToken();
+    const token: String = this.getToken();
     return token && token.length > 0;
   }
 

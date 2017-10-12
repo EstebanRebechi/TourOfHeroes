@@ -16,6 +16,7 @@ import {HomeComponent} from './Components/home/home.component';
 import {HeroSearchService} from './Services/hero-search.service';
 import {AuthGuard} from './authguard';
 import {AuthenticationService} from './services/authentication.service';
+import {ApiService} from './Services/api.service';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import {AuthenticationService} from './services/authentication.service';
     HeroService,
     HeroSearchService,
     AuthGuard,
-    AuthenticationService],
+    AuthenticationService,
+    ApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

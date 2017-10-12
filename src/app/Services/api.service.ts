@@ -1,4 +1,4 @@
-import {AuthenticationService} from '../services/authentication.service';
+import {AuthenticationService} from './authentication.service';
 import {Injectable} from '@angular/core';
 import {Headers, Http} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
@@ -20,7 +20,7 @@ export class ApiService {
     if (this.headers.has('Authorization')) {
       this.headers.delete('Authorization');
     }
-    this.headers.append('Authorization', 'Bearer ' + this.authenticationService.getToken);
+    this.headers.append('Authorization', 'Bearer ' + this.authenticationService.getToken());
     return this.http.get(dir, {headers: this.headers});
   }
 
@@ -29,7 +29,7 @@ export class ApiService {
     if (this.headers.has('Authorization')) {
       this.headers.delete('Authorization');
     }
-    this.headers.append('Authorization', 'Bearer ' + this.authenticationService.getToken);
+    this.headers.append('Authorization', 'Bearer ' + this.authenticationService.getToken());
     return this.http.put(dir, JSON.stringify(body), {headers: this.headers});
   }
 
@@ -38,7 +38,7 @@ export class ApiService {
     if (this.headers.has('Authorization')) {
       this.headers.delete('Authorization');
     }
-    this.headers.append('Authorization', 'Bearer ' + this.authenticationService.getToken);
+    this.headers.append('Authorization', 'Bearer ' + this.authenticationService.getToken());
     return this.http.put(dir, JSON.stringify(body), {headers: this.headers});
   }
 
@@ -47,7 +47,7 @@ export class ApiService {
     if (this.headers.has('Authorization')) {
       this.headers.delete('Authorization');
     }
-    this.headers.append('Authorization', 'Bearer ' + this.authenticationService.getToken);
+    this.headers.append('Authorization', 'Bearer ' + this.authenticationService.getToken());
     return this.http.put(dir, {headers: this.headers});
   }
 }
