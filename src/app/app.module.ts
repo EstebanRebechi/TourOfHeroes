@@ -11,6 +11,12 @@ import {HeroesComponent} from './Components/heroes/heroes.component';
 import {HeroService} from './Services/hero.service';
 import {DashboardComponent} from './Components/dashboard/dashboard.component';
 import {HeroSearchComponent} from './Components/hero-search/hero-search.component';
+import {LoginComponent} from './Components/login/login.component';
+import {HomeComponent} from './Components/home/home.component';
+import {HeroSearchService} from './Services/hero-search.service';
+import {AuthGuard} from './authguard';
+import {AuthenticationService} from './services/authentication.service';
+import {ApiService} from './Services/api.service';
 
 @NgModule({
   declarations: [
@@ -18,7 +24,9 @@ import {HeroSearchComponent} from './Components/hero-search/hero-search.componen
     HeroDetailComponent,
     HeroesComponent,
     DashboardComponent,
-    HeroSearchComponent
+    HeroSearchComponent,
+    LoginComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +34,12 @@ import {HeroSearchComponent} from './Components/hero-search/hero-search.componen
     HttpModule,
     AppRoutingModule
   ],
-  providers: [HeroService],
+  providers: [
+    HeroService,
+    HeroSearchService,
+    AuthGuard,
+    AuthenticationService,
+    ApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -1,7 +1,7 @@
-import { Hero } from '../../Model/hero';
-import { Component, OnInit } from '@angular/core';
-import { HeroService } from '../../Services/hero.service';
-import { Router } from '@angular/router';
+import {Hero} from '../../Model/hero';
+import {Component, OnInit} from '@angular/core';
+import {HeroService} from '../../Services/hero.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-heroes',
@@ -12,7 +12,7 @@ export class HeroesComponent implements OnInit {
   heroes: Hero[];
   selectedHero: Hero;
 
-  constructor(private router: Router, private heroService: HeroService) { }
+  constructor(private router: Router, private heroService: HeroService) {}
 
   ngOnInit(): void {
     this.getHeroes();
@@ -20,7 +20,9 @@ export class HeroesComponent implements OnInit {
 
   add(name: string): void {
     name = name.trim();
-    if (!name) { return; }
+    if (!name) {
+      return;
+    }
     this.heroService.create(name)
       .then(hero => {
         this.heroes.push(hero);
@@ -30,11 +32,13 @@ export class HeroesComponent implements OnInit {
 
   delete(hero: Hero): void {
     this.heroService
-        .delete(hero.id)
-        .then(() => {
-          this.heroes = this.heroes.filter(h => h !== hero);
-          if (this.selectedHero === hero) { this.selectedHero = null; }
-        });
+      .delete(hero.id)
+      .then(() => {
+        this.heroes = this.heroes.filter(h => h !== hero);
+        if (this.selectedHero === hero) {
+          this.selectedHero = null;
+        }
+      });
   }
 
   onSelect(hero: Hero): void {
@@ -46,7 +50,11 @@ export class HeroesComponent implements OnInit {
   }
 
   getHeroes(): void {
-    this.heroService.getHeroes().then(heroes => this.heroes = heroes);
+    this.heroService.getHeroes().then(heroes => this.heroes = heroes,
+      error => {
+        this.router.navigate(['login']);
+        console.error('An error occurred in heroes component, navigating to login: ', error);
+      });
   }
 
 }

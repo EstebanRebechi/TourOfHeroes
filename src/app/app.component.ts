@@ -1,4 +1,6 @@
-import { Component, OnInit, enableProdMode } from '@angular/core';
+import {AuthenticationService} from './services/authentication.service';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,10 +9,14 @@ import { Component, OnInit, enableProdMode } from '@angular/core';
 })
 
 export class AppComponent implements OnInit {
-  title = 'Tour of Heroes';
 
-  constructor() { }
+  constructor(private authenticationService: AuthenticationService, private router: Router) {}
 
   ngOnInit(): void {
+  }
+
+  logout() {
+    this.authenticationService.logout();
+    this.router.navigate(['/login']);
   }
 }
